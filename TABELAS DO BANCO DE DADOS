@@ -18,7 +18,7 @@ CREATE TABLE CIDADE (
     id_cidade SERIAL PRIMARY KEY,
     nome_cidade VARCHAR(100) NOT NULL,
     id_estado INT REFERENCES ESTADO(id_estado),
-    UNIQUE(nome_cidade, id_estado) -- para garantir que não haja cidades com o mesmo nome no mesmo estado
+    UNIQUE(nome_cidade, id_estado) 
 );
 
 CREATE TABLE ENDERECO (
