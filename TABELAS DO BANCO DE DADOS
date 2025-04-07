@@ -1,0 +1,122 @@
+CREATE TABLE USUARIO (
+    id_usuario SERIAL PRIMARY KEY,
+    nome_usuario VARCHAR(100) NOT NULL,
+    cpf_usuario VARCHAR(14),
+    cnpj_usuario VARCHAR(18),
+    senha_usuario VARCHAR(10) NOT NULL,
+    email_usuario VARCHAR(320) NOT NULL,
+    data_adicao DATE NOT NULL
+);
+
+CREATE TABLE ESTADO (
+    id_estado SERIAL PRIMARY KEY,
+    nome_estado VARCHAR(40) NOT NULL,
+    sigla VARCHAR(2) NOT NULL
+);
+
+CREATE TABLE CIDADE (
+    id_cidade SERIAL PRIMARY KEY,
+    nome_cidade VARCHAR(100) NOT NULL,
+    id_estado INT REFERENCES ESTADO(id_estado),
+    UNIQUE(nome_cidade, id_estado) -- para garantir que não haja cidades com o mesmo nome no mesmo estado
+);
+
+CREATE TABLE ENDERECO (
+    id_endereco SERIAL PRIMARY KEY,
+    rua VARCHAR(255) NOT NULL,
+    id_cidade INT REFERENCES CIDADE(id_cidade),
+    bairro VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE TELEFONE (
+    id_telefone SERIAL PRIMARY KEY,
+    id_usuario INT REFERENCES USUARIO(id_usuario),
+    num_telefone VARCHAR(9) NOT NULL,
+    ddd VARCHAR(2) NOT NULL
+);
+
+CREATE TABLE CARGO (
+    id_cargo SERIAL PRIMARY KEY,
+    nome_cargo VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE NOTIFICACAO (
+    id_notificacao SERIAL PRIMARY KEY,
+    tipo_notific VARCHAR(50) NOT NULL,
+    data_notific DATE NOT NULL,
+    descricao_notific VARCHAR(255) NOT NULL,
+    id_usuario INT REFERENCES USUARIO(id_usuario)
+);
+
+CREATE TABLE RECEITA (
+    id_venda SERIAL PRIMARY KEY,
+    data_venda DATE NOT NULL,
+    nome_cliente VARCHAR(100) NOT NULL,
+    nome_produto VARCHAR(100) NOT NULL,
+    qtd_produto INT NOT NULL,
+    val_unitario DECIMAL(10, 2) NOT NULL,
+    id_categoria INT REFERENCES CATEGORIA_RECEITA(id_categoria),
+    total_receita DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE CATEGORIA_RECEITA (
+    id_categoria SERIAL PRIMARY KEY,
+    nome_categoria VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE PGTO_RECEITA (
+    id_pgto_receita SERIAL PRIMARY KEY,
+    descricao VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE DESPESA_FUNCIONARIO (
+    id_despesa_func SERIAL PRIMARY KEY,
+    id_cargo INT REFERENCES CARGO(id_cargo),
+    nome_despesa VARCHAR(255) NOT NULL,
+    data_pagamento DATE NOT NULL,
+    salario DECIMAL(10, 2) NOT NULL,
+    data_nasc DATE NOT NULL,
+    total_despesa DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE DESPESA_PRODUTO (
+    id_despesa_prod SERIAL PRIMARY KEY,
+    data_compra DATE NOT NULL,
+    nome_produto VARCHAR(100) NOT NULL,
+    qtd_produto INT NOT NULL,
+    val_unitario DECIMAL(10, 2) NOT NULL,
+    total_despesa DECIMAL(10, 2) NOT NULL,
+    validade DATE
+);
+
+CREATE TABLE DESPESA_ENERGIA (
+    id_despesa_ener SERIAL PRIMARY KEY,
+    data_conta DATE NOT NULL,
+    data_pagamento DATE NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE DESPESA_AGUA (
+    id_despesa_agua SERIAL PRIMARY KEY,
+    data_conta DATE NOT NULL,
+    data_pagamento DATE NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE DESPESA_INTERNET (
+    id_despesa_internet SERIAL PRIMARY KEY,
+    data_conta DATE NOT NULL,
+    data_pagamento DATE NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE DESPESA_VARIADOS (
+    id_despesa_variados SERIAL PRIMARY KEY,
+    data_conta DATE NOT NULL,
+    data_pagamento DATE NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL
+);
